@@ -4,6 +4,13 @@
 
 #include <stdint.h>
 
+#define ENABLE 				1
+#define DISABLE 			0
+#define SET 				ENABLE
+#define RESET				DISABLE
+#define GPIO_PIN_SET		SET
+#define GPIO_PIN_RESET		DISABLE
+
 // base addresses of Flash, ROM and SRAM
 
 #define FLASH_BASEADDR				0X08000000U
