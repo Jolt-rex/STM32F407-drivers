@@ -154,6 +154,51 @@ typedef struct
 
 // Clock enable macros for SPIx peripherals
 #define SPI1_PCLK_EN()		(RCC->APB2ENR |= (1 << 12))
+#define SPI2_PCLK_EN()		(RCC->APB1ENR |= (1 << 14))
+#define SPI3_PCLK_EN()		(RCC->APB1ENR |= (1 << 15))
+
+// Clock enable macros for USARTx peripherals 1 - 6, 4 & 5 UART
+#define USART1_PLCK_EN()	(RCC->APB2ENR |= (1 << 4))
+#define USART2_PLCK_EN()	(RCC->APB1ENR |= (1 << 17))
+#define USART3_PLCK_EN()	(RCC->APB1ENR |= (1 << 18))
+#define UART4_PLCK_EN()		(RCC->APB1ENR |= (1 << 19))
+#define UART5_PLCK_EN()		(RCC->APB1ENR |= (1 << 20))
+#define USART6_PLCK_EN()	(RCC->APB2ENR |= (1 << 5))
+
+// Clock enable macros for SYSCFG peripheral
+#define SYSCFG_PCLK_EN()	(RCC->APB2ENR |= (1 << 14))
+
+// Clock disable macros for GPIOx peripherals
+#define GPIOA_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 0))
+#define GPIOB_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 1))
+#define GPIOC_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 2))
+#define GPIOD_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 3))
+#define GPIOE_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 4))
+#define GPIOF_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 5))
+#define GPIOG_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 6))
+#define GPIOH_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 7))
+#define GPIOI_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 8))
+
+// Clock disable macros for I2Cx peripherals
+#define I2C1_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 21))
+#define I2C2_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 22))
+#define I2C3_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 23))
+
+// Clock disable macros for SPIx peripherals
+#define SPI1_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 12))
+#define SPI2_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 14))
+#define SPI3_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 15))
+
+// Clock disable macros for USARTx peripherals 1 - 6, 4 & 5 UART
+#define USART1_PLCK_DI()	(RCC->APB2ENR &= ~(1 << 4))
+#define USART2_PLCK_DI()	(RCC->APB1ENR &= ~(1 << 17))
+#define USART3_PLCK_DI()	(RCC->APB1ENR &= ~(1 << 18))
+#define UART4_PLCK_DI()		(RCC->APB1ENR &= ~(1 << 19))
+#define UART5_PLCK_DI()		(RCC->APB1ENR &= ~(1 << 20))
+#define USART6_PLCK_DI()	(RCC->APB2ENR &= ~(1 << 5))
+
+// Clock disable macros for SYSCFG peripheral
+#define SYSCFG_PCLK_DI()	(RCC->APB2ENR &= ~(1 << 14))
 
 
 #endif /* INC_STM32F407XX_H_ */
