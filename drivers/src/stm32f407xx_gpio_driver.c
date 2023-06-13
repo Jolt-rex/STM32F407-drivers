@@ -106,8 +106,11 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
 	{
 		// a non interrupt mode
-		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNUMBER));
-		pGPIOHandle->pGPIOx->MODER = temp;
+		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+		// clear the 2 bit's first (0b11)
+		pGPIOHandle->pGPIOx->MODER &= ~(0x3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+		// set the MODE bits
+		pGPIOHandle->pGPIOx->MODER |= temp;
 	} else
 	{
 		// TODO: an interrupt mode
@@ -116,20 +119,23 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	temp = 0;
 
 	// configure the speed
-	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNUMBER));
-	pGPIOHandle->pGPIOx->OSPEEDR = temp;
+	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+	pGPIOHandle->pGPIOx->OSPEEDR &= ~(0x3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber)); // clearing
+	pGPIOHandle->pGPIOx->OSPEEDR |= temp; // setting
 
 	temp = 0;
 
 	// configure the PUPD settings
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-	pGPIOHandle->pGPIOx->PUPDR = temp;
+	pGPIOHandle->pGPIOx->PUPDR &= ~(0x3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber)); // clearing
+	pGPIOHandle->pGPIOx->PUPDR |= temp; // setting
 
 	temp = 0;
 
 	// configure the optype
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-	pGPIOHandle->pGPIOx->OTYPER = temp;
+	pGPIOHandle->pGPIOx->OTYPER &= ~(0x1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber); // clearing
+	pGPIOHandle->pGPIOx->OTYPER |= temp; // setting
 
 	temp = 0;
 
@@ -137,6 +143,11 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALTFN)
 	{
 		// configure the alt function registers
+		uint8_t altFunRegIndex = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 8;
+		uint8_t pinOffset = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 8;
+		pGPIOHandle->pGPIOx->AFR[altFunRegIndex] &= ~(0xF << (4 * pinOffset)); // clearing
+		pGPIOHandle->pGPIOx->AFR[altFunRegIndex] |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * pinOffset)); // setting
+
 	}
 
 }
@@ -144,7 +155,34 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 
 void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 {
-
+	if(pGPIOx == GPIOA)
+	{
+		GPIOA_REG_RESET();
+	} else if(pGPIOx == GPIOB)
+	{
+		GPIOB_REG_RESET();
+	} else if(pGPIOx == GPIOC)
+	{
+		GPIOC_REG_RESET();
+	} else if(pGPIOx == GPIOD)
+	{
+		GPIOD_REG_RESET();
+	} else if(pGPIOx == GPIOE)
+	{
+		GPIOE_REG_RESET();
+	} else if(pGPIOx == GPIOF)
+	{
+		GPIOF_REG_RESET();
+	} else if(pGPIOx == GPIOG)
+	{
+		GPIOG_REG_RESET();
+	} else if(pGPIOx == GPIOH)
+	{
+		GPIOH_REG_RESET();
+	} else if(pGPIOx == GPIOI)
+	{
+		GPIOI_REG_RESET();
+	}
 }
 
 
