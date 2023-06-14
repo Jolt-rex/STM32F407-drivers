@@ -187,30 +187,104 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 
 
 // Data read and write
+/****************************************************
+ * @fn				- GPIO_ReadFromInputPin
+ *
+ * @brief			- This function reads the value from a given input pin
+ *
+ * @param[in]		- base address of the GPIO peripheral
+ * @param[in]		- pin number
+ *
+ * return			- 0 or 1 value
+ *
+ * @note			- none
+ *
+ */
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 {
-
+	uint8_t value;
+	value = (uint8_t)((pGPIOx->IDR >> PinNumber) & 0x00000001);
+	return value;
 }
 
-
+/****************************************************
+ * @fn				- GPIO_ReadFromInputPin
+ *
+ * @brief			- This function reads the value from a given input pin
+ *
+ * @param[in]		- base address of the GPIO peripheral
+ *
+ * return			- 16bit value of the entire GPIO port
+ *
+ * @note			- none
+ *
+ */
 uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx)
 {
-
+	return (uint16_t)pGPIOx->IDR;
 }
 
+/****************************************************
+ * @fn				- GPIO_WriteToOutputPin
+ *
+ * @brief			- This function writes the given value to the pin number
+ *
+ * @param[in]		- base address of the GPIO peripheral
+ * @param[in]		- pin number to write to
+ * @param[in]		- value to be written 0 or 1
+ *
+ * return			- None
+ *
+ * @note			- none
+ *
+ */
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value)
 {
-
+	if(Value == GPIO_PIN_SET)
+	{
+		// write 1 to the output data register at the bit field of the pin number
+		pGPIOx->ODR |= (1 << PinNumber);
+	} else
+	{
+		// write 0
+		pGPIOx->ODR &= ~(1 << PinNumber);
+	}
 }
 
+/****************************************************
+ * @fn				- GPIO_WriteToOutputPort
+ *
+ * @brief			- This function writes the 16bit value to the GPIO port
+ *
+ * @param[in]		- base address of the GPIO peripheral
+ * @param[in]		- 16bit value to be written
+ *
+ * return			- none
+ *
+ * @note			- none
+ *
+ */
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t Value)
 {
-
+	pGPIOx->ODR = Value;
 }
 
+/****************************************************
+ * @fn				- GPIO_ToggleOutputPin
+ *
+ * @brief			- This function toggles the output pin state between 0 and 1
+ *
+ * @param[in]		- base address of the GPIO peripheral
+ * @param[in]		- pin number
+ *
+ * return			- none
+ *
+ * @note			- none
+ *
+ */
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 {
-
+	pGPIOx->ODR ^= (1 << PinNumber);
 }
 
 
